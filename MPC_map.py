@@ -79,7 +79,7 @@ def generate_orbits(NEOs):
                 color = "green"
             elif n.orbit_type == "Hilda":
                 color = "brown"
-            elif orbit_type == "Jupiter Trojan":
+            elif n.orbit_type == "Jupiter Trojan":
                 color = "aquamarine"
             elif n.orbit_type == "Distant Object":
                 color = "navy"
@@ -144,9 +144,7 @@ def generate_orbits(NEOs):
 
 # set filters here for which kind of objects should be plotted
 def filterNEO(n):
-    if (not n.orbit_type) or (n.orbit_type != 'Aten' and
-                              n.orbit_type != 'Atira' and
-                              n.orbit_type != 'Amor'):
+    if (not n.orbit_type):
         return True
     else:
         return False
@@ -154,7 +152,7 @@ def filterNEO(n):
 def main():
     print("Reading JSON data...")
     NEO_data = readJSON("data/orbit/nea_extended.json") # you may also load other JSONs from Minor Planet Center
-    MAX_OBJECTS = 100 # set max. number of orbits you want to plot so that your computer doesn't set itself on fire
+    MAX_OBJECTS = 1e8 # set max. number of orbits you want to plot so that your computer doesn't set itself on fire
 
     NEOs = []
     i = 0
