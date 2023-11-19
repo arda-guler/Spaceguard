@@ -31,7 +31,7 @@ def readJSON(filename):
     except json.JSONDecodeError as e:
         print("Error: Failed to decode JSON in", filename, "\n", e)
 
-def generate_orbits(NEOs):
+def generate_orbits(NEOs, poly=1000):
     
     fig = plt.figure(figsize=(10, 8))
     ax = fig.add_subplot(111, projection='3d')
@@ -43,7 +43,7 @@ def generate_orbits(NEOs):
         ascending_node = np.radians(n.node)
         inclination = np.radians(n.i)
         
-        true_anomaly = np.linspace(0, 2 * np.pi, 1000)
+        true_anomaly = np.linspace(0, 2 * np.pi, poly)
 
         r = (semimajor_axis * (1 - eccentricity**2)) / (1 + eccentricity * np.cos(true_anomaly))
 
@@ -153,6 +153,7 @@ def main():
     print("Reading JSON data...")
     NEO_data = readJSON("data/orbit/nea_extended.json") # you may also load other JSONs from Minor Planet Center
     MAX_OBJECTS = 1e8 # set max. number of orbits you want to plot so that your computer doesn't set itself on fire
+    orbit_poly = 1000 # how crisp the minor planet orbits should be rendered
 
     NEOs = []
     i = 0
@@ -184,6 +185,6 @@ def main():
             break
 
     print("Generating orbit plot...")
-    generate_orbits(NEOs)
+    generate_orbits(NEOs, orbit_poly)
 
 main()
