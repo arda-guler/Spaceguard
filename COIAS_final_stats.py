@@ -22,7 +22,7 @@ def plot_stacked_histogram(separated_floats):
     plt.xlabel('Magnitude')
     plt.ylabel('Number of objects')
     plt.title('Observation magnitudes')
-    plt.legend(title='Colors', loc='upper right')
+    plt.legend(title='Bands', loc='upper right')
     plt.grid()
     plt.show()
 
