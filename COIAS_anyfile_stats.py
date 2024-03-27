@@ -68,22 +68,25 @@ def main(sys_args, debug=False):
         for line in file_lines:
             H_num = line[0:12]
 
-            if not H_num in H_numbers:
-                H_numbers.append(H_num)
+            try:
+                if not H_num in H_numbers:
+                    H_numbers.append(H_num)
 
-                line = line.replace("*", " ")
-                line = line.split(" ")
-                line = [i for i in line if i != ""] # removes all "" elements
+                    line = line.replace("*", " ")
+                    line = line.split(" ")
+                    line = [i for i in line if i != ""] # removes all "" elements
 
-                mag = float(line[10])
+                    mag = float(line[10])
 
-                if len(line[11]) > 1:
-                    band = line[11][0]
-                else:
-                    band = line[11]
+                    if len(line[11]) > 1:
+                        band = line[11][0]
+                    else:
+                        band = line[11]
 
-                magnitudes.append(mag)
-                bands.append(band)
+                    magnitudes.append(mag)
+                    bands.append(band)
+            except:
+                print("Skipping line:\n", line)
 
     print("Found " + str(len(bands)) + " objects.")
 
