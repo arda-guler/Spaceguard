@@ -66,22 +66,28 @@ def main(sys_args, debug=False):
         file_lines = file.readlines()
 
         for line in file_lines:
-            H_num = int(line[0:12])
+            H_num = line[0:12]
 
             if not H_num in H_numbers:
                 H_numbers.append(H_num)
-                
+
+                line = line.replace("*", " ")
                 line = line.split(" ")
                 line = [i for i in line if i != ""] # removes all "" elements
 
                 mag = float(line[10])
-                band = line[11]
+
+                if len(line[11]) > 1:
+                    band = line[11][0]
+                else:
+                    band = line[11]
 
                 magnitudes.append(mag)
                 bands.append(band)
 
     print("Found " + str(len(bands)) + " objects.")
 
+    print(bands)
     max_mag = min(magnitudes)
     min_mag = max(magnitudes)
 
