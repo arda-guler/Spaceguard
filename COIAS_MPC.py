@@ -32,7 +32,7 @@ if __name__ == "__main__":
     print("Reading send_mpc.txt files...")
     for root, dirs, files in os.walk("observations/"):
         for file in files:
-            if file == "send_mpc.txt":
+            if file.startswith("send_mpc"):
                 mpc_send_files.append(os.path.join(root, file))
 
     objects = []
