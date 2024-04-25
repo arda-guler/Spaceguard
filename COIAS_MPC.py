@@ -112,6 +112,9 @@ if __name__ == "__main__":
                 ecc = float(ecc)
             except:
                 print("Something went wrong getting orbital elements.")
+                au = "no idea"
+                inc = "dont know"
+                ecc = "try find_orb"
 
             outline = objname + " a=" + str(au) + ", i=" + str(inc) + ", e=" + str(ecc) + "\n"
             outlines.append(outline)
