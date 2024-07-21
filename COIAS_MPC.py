@@ -6,25 +6,40 @@ mpc_send_files = []
 WAMO_all_filename = "MPC_stats.txt"
 MPC80_filename = "MPC_truncated.txt"
 WAMO_ids_filename = "MPC_ids.txt"
+numbered_filename = "MPC_numbered.txt"
 WAMO_discoveries_filename = "MPC_discoveries.txt"
 MPC_elements_filename = "MPC_discovery_detailed.txt"
 
 def truncate_lines(input_file, output_file):
+    line_count = 0
     with open(input_file, 'r') as infile, open(output_file, 'w') as outfile:
         for line in infile:
             truncated_line = line[:80]
             outfile.write(truncated_line + '\n')
+            line_count += 1
+
+    print("Total observations: " + str(line_count))
 
 def find_identification_lines(input_file, output_file):
+    id_count = 0
     with open(input_file, 'r') as infile, open(output_file, 'w') as outfile:
         for line in infile:
             if "identified" in line:
                 outfile.write(line)
+                id_count += 1
+
+    print("Identified observations: " + str(id_count))
 
 def find_discoveries(input_file, output_file):
     with open(input_file, 'r') as infile, open(output_file, 'w') as outfile:
         for line in infile:
             if "*" in line:
+                outfile.write(line)
+
+def find_numbered(input_file, output_file):
+    with open(input_file, 'r') as infile, open(output_file, 'w') as outfile:
+        for line in infile:
+            if not " " in line[0:12]:
                 outfile.write(line)
 
 if __name__ == "__main__":
@@ -78,6 +93,12 @@ if __name__ == "__main__":
     output_file_name = WAMO_ids_filename
     find_identification_lines(input_file_name, output_file_name)
 
+    # get newly numbered objects
+    print("Getting newly numbered measurements...")
+    input_file_name = WAMO_all_filename
+    output_file_name = numbered_filename
+    find_numbered(input_file_name, output_file_name)
+
     # Get discovery asterisks
     print("Isolating discoveries...")
     input_file_name = WAMO_ids_filename
@@ -88,6 +109,7 @@ if __name__ == "__main__":
     print("Getting orbital elements from MPC...")
     with open(WAMO_discoveries_filename, "r") as file:
         lines = file.readlines()
+        print("Num. of potential discoveries: " + str(len(lines)))
 
         outlines = []
         for line in lines:
@@ -105,18 +127,22 @@ if __name__ == "__main__":
                     inc = l2[53:60]
                 elif "eccentricity" in l2:
                     ecc = l2[50:57]
+                elif "uncertainty" in l2:
+                    uncert = l2[87]
 
             try:
                 au = float(au)
                 inc = float(inc)
                 ecc = float(ecc)
+                uncert = int(uncert)
             except:
                 print("Something went wrong getting orbital elements.")
                 au = "no idea"
                 inc = "dont know"
                 ecc = "try find_orb"
+                uncert = "sorry"
 
-            outline = objname + " a=" + str(au) + ", i=" + str(inc) + ", e=" + str(ecc) + "\n"
+            outline = objname + " a=" + str(au) + ", i=" + str(inc) + ", e=" + str(ecc) + ", u=" + str(uncert) + "\n"
             outlines.append(outline)
 
     print("Writing discovery orbital elements to file...")
