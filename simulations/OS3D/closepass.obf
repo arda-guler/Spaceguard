@@ -1,0 +1,11 @@
+delta_t 10
+create_plot ast_dist dist 2000FX40 2014HO64 0 345600
+create_plot ast_vel vel_mag 2000FX40 2014HO64 0 345600
+show 2014HO64 dist 2000FX40 DIST
+show 2014HO64 vel_mag 2000FX40 VEL
+lock_cam 2014HO64
+output_rate 100
+rapid_compute 259200
+t=259200 delta_t 1
+t=27899 delta_t 10
+rapid_compute 279000 345600
