@@ -9,6 +9,7 @@ WAMO_ids_filename = "MPC_ids.txt"
 numbered_filename = "MPC_numbered.txt"
 WAMO_discoveries_filename = "MPC_discoveries.txt"
 MPC_elements_filename = "MPC_discovery_detailed.txt"
+MPC_distant_elements_filename = "MPC_distant_discovery_detailed.txt"
 
 def truncate_lines(input_file, output_file):
     line_count = 0
@@ -41,6 +42,20 @@ def find_numbered(input_file, output_file):
         for line in infile:
             if not " " in line[0:12]:
                 outfile.write(line)
+
+def separate_distant(input_filename, output_filename):
+    TNO_lines = []
+    with open(input_filename, "r") as f:
+        lines = f.readlines()
+        for line in lines:
+            line_s = line.split(" ")
+            sma = line_s[1]
+            if float(sma[2:-1]) > 6:
+                TNO_lines.append(line)
+
+    with open(output_filename, "w") as f:
+        for line in TNO_lines:
+            f.write(line)
 
 if __name__ == "__main__":
     # Get all measurement stats
@@ -95,7 +110,7 @@ if __name__ == "__main__":
 
     # get newly numbered objects
     print("Getting newly numbered measurements...")
-    input_file_name = WAMO_all_filename
+    input_file_name = WAMO_ids_filename
     output_file_name = numbered_filename
     find_numbered(input_file_name, output_file_name)
 
@@ -149,5 +164,8 @@ if __name__ == "__main__":
     with open(MPC_elements_filename, "w") as file:
         for l in outlines:
             file.write(l)
+
+    print("Isolating TNO discoveries...")
+    separate_distant(MPC_elements_filename, MPC_distant_elements_filename)
 
     print("Done!")
